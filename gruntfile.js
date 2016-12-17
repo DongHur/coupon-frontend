@@ -11,15 +11,27 @@ module.exports = function(grunt) {
             }
         },
 
+        uglify: {
+            minify: {
+                options: {
+                    reserveDOMProperties: true,
+                },
+                files: {
+                    'public/js/script.min.js': ['app/js/script.js']
+                }
+            }
+        },
+
         watch: {
-            files: ['gruntfile.js', 'app/stylesheets/*'],
-            tasks: ['stylus']
+            files: ['gruntfile.js', 'app/stylesheets/*', 'app/js/*'],
+            tasks: ['stylus', 'uglify']
         }
     });
 
     grunt.loadNpmTasks('grunt-contrib-stylus');
     grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
 
-    grunt.registerTask('default', ['stylus', 'watch']);
-    grunt.registerTask('publish', ['stylus']);
+    grunt.registerTask('default', ['stylus', 'uglify', 'watch']);
+    grunt.registerTask('publish', ['stylus', 'uglify']);
 };
