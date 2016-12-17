@@ -1,17 +1,16 @@
 extends template
 
 block content
-    #signup-form-wrapper
-        form#signup-form
-            input.form-input(type='text' name='firstName' placeholder='First name')
-            input.form-input(type='text' name='lastName' placeholder='Last name')
-            input.form-input(type='number' name='classYear' placeholder='Class year')
-            input.form-input(type='email' name='email' placeholder='Email')
-            input.form-input(type='phone' name='phone' placeholder='Phone number')
-            select.form-input(name='phoneProvier')
-                option(value='verizon') Verizon
-                option(value='att') AT&T
-                option(value='tmobile') T-Mobile
-                option(value='sprint') Sprint
-                option(value='other') Other
-            button.form-input(onclick='return false') Submit
+    form#signup-form
+        input.form-input(type='text' name='firstName' placeholder='First name')
+        input.form-input(type='text' name='lastName' placeholder='Last name')
+        input.form-input(type='number' name='classYear' placeholder='Class year')
+        input.form-input(type='email' name='email' placeholder='Email')
+        input.form-input(type='phone' name='phone' placeholder='Phone number')
+        select.form-input(name='phoneProvider')
+            option(value='verizon') Verizon
+            option(value='att') AT&T
+            option(value='tmobile') T-Mobile
+            option(value='sprint') Sprint
+            option(value='other') Other
+        button.form-input(onclick='return false') Submit
