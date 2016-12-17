@@ -4,6 +4,8 @@
   "author": "Jordan Hayashi <jhhayashi@gmail.com>",
   "private": true,
   "scripts": {
+    "build": "npm install && grunt publish",
+    "dev": "grunt & nodemon coupon-frontend.js"
   },
   "dependencies": {
     "body-parser": "~1.13.2",
@@ -15,7 +17,9 @@
   },
   "devDependencies": {
     "grunt": "^1.0.1",
+    "grunt-cli": "^1.2.0",
     "grunt-contrib-stylus": "^1.2.0",
-    "grunt-contrib-watch": "^1.0.0"
+    "grunt-contrib-watch": "^1.0.0",
+    "nodemon": "^1.11.0"
   }
 }
