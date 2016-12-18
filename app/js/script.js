@@ -84,5 +84,12 @@ function submitSuccess(res) {
 }
 
 function submitError(res) {
-    console.log('error!');
+    if (res.status === 400)
+        return res.text().then(function(message) {displayError(message)});
+    return displayError('There was a problem submitting your form. Please try again later.');
 }
+
+function displayError(message) {
+    document.getElementById('error-message').innerHTML = message;
+}
+
