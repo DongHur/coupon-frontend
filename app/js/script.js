@@ -20,7 +20,14 @@ function submitForm() {
     data.phone = phone;
     data.phoneProvider = form.phoneProvider.value;
 
-    console.log(data);
+    fetch('/', {
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        method: 'POST',
+        body: JSON.stringify(data)
+    }).then(submitSuccess)
+    .catch(submitError);
 }
 
 function error(target) {
@@ -54,4 +61,15 @@ function validateEmail() {
     var isValid = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(emailInput.value);
     if (!isValid) error(emailInput);
     return isValid;
+}
+
+function submitSuccess(res) {
+    console.log('success!');
+    res.json().then(function(body) {
+        console.log(body)
+    });
+}
+
+function submitError(res) {
+    console.log('error!');
 }
