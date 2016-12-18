@@ -1,14 +1,23 @@
 function submitForm() {
     var form = document.getElementById('signup-form');
     var data = {};
+    var exit = false;
     if (form.firstName.value) data.firstName = form.firstName.value;
     if (form.lastName.value) data.lastName = form.lastName.value;
     if (form.classYear.value) data.classYear = form.classYear.value;
-    if (form.email.value) data.email = form.email.value;
+    if (form.email.value && validateEmail()) data.email = form.email.value;
 
-    if (!form.phone.value)
-        return error(form.phone);
-    data.phone = form.phone.value;
+    var phone = validatePhone();
+    if (!phone) {
+        error(form.phone);
+        exit = true;
+    }
+    if (form.phoneProvider.value === 'null') {
+        error(form.phoneProvider);
+        exit = true;
+    }
+    if (exit) return;
+    data.phone = phone;
     data.phoneProvider = form.phoneProvider.value;
 
     console.log(data);
@@ -20,4 +29,29 @@ function error(target) {
 
 function clearError(target) {
     target.style.border = '1px solid #888';
+}
+
+// validates and returns the sanitized string
+function validatePhone() {
+    var phone = document.getElementById('signup-form').phone.value;
+    var sanitized = '';
+    for (var i = 0; i < phone.length; i++) {
+        if (!isNaN(phone[i]) && phone[i] !== ' ')
+            sanitized += phone[i];
+    }
+    if (sanitized.length !== 10) {
+        error(document.getElementById('signup-form').phone);
+        return '';
+    }
+    return sanitized;
+}
+
+// returns true iff valid
+function validateEmail() {
+    var emailInput = document.getElementById('signup-form').email;
+    if (!emailInput.value) return true;
+    // http://emailregex.com/
+    var isValid = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(emailInput.value);
+    if (!isValid) error(emailInput);
+    return isValid;
 }

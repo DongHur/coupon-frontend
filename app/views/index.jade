@@ -5,9 +5,12 @@ block content
         input.form-input(type='text' name='firstName' placeholder='First name')
         input.form-input(type='text' name='lastName' placeholder='Last name')
         input.form-input(type='number' name='classYear' placeholder='Class year')
-        input.form-input(type='email' name='email' placeholder='Email' onFocus='clearError(this)')
-        input.form-input(type='phone' name='phone' placeholder='Phone number' onFocus='clearError(this)')
-        select.form-input(name='phoneProvider')
+        input.form-input(type='email' name='email' placeholder='Email'
+            onFocus='clearError(this)' onBlur='validateEmail()')
+        input.form-input(type='phone' name='phone' placeholder='Phone number*'
+            onFocus='clearError(this)' onBlur='validatePhone()')
+        select.form-input(name='phoneProvider' onFocus='clearError(this)')
+            option(value='null') --Select Provider*--
             option(value='verizon') Verizon
             option(value='att') AT&T
             option(value='tmobile') T-Mobile
