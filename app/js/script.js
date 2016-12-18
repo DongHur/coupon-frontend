@@ -1,3 +1,9 @@
+var modal = document.getElementById('success');
+// close modal if click outside
+window.onclick = function(event) {
+    if (event.target === modal) modal.style.display = 'none';
+}
+
 function submitForm() {
     var form = document.getElementById('signup-form');
     var data = {};
@@ -63,11 +69,18 @@ function validateEmail() {
     return isValid;
 }
 
+function clearForm() {
+    var form = document.getElementById('signup-form');
+    form.reset();
+    clearError(form.email);
+    clearError(form.phone);
+    clearError(form.phoneProvider);
+}
+
 function submitSuccess(res) {
-    console.log('success!');
-    res.json().then(function(body) {
-        console.log(body)
-    });
+    if (!res.ok) return submitError(res);
+    clearForm();
+    modal.style.display = 'block';
 }
 
 function submitError(res) {
