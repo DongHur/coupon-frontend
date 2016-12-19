@@ -47,7 +47,7 @@ function error(target) {
 
 function clearError(target) {
     if (target === 'message')
-        document.getElementById('error-message').style.visibility = 'hidden';
+        return document.getElementById('error-message').style.visibility = 'hidden';
     target.style.border = '1px solid #888';
 }
 
@@ -111,8 +111,8 @@ function clearForm() {
 
 function submitSuccess(res) {
     if (!res.ok) return submitError(res);
-    clearForm();
     modal.style.display = 'block';
+    clearForm();
 }
 
 function submitError(res) {
