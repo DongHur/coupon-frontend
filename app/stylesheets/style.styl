@@ -9,27 +9,36 @@ html, body
     width 90%
     max-width 600px
     margin 0 auto
-    text-align center
-    input
-        display block
-        width 100%
-        line-height 2rem
-        border-radius 5px
-        padding 5px
-        border 1px solid #888
-    select
-        display block
-        width 50%
-        padding 10px 5px
-    button
-        margin 0 auto
-        padding 20px
-        min-width 20%
-        border-radius 5px
-        border 0
 .form-input
-    font-size 18px
+    display block
+    width 100%
     margin-bottom 10px
+    padding 5px
+    border-radius 5px
+    border 1px solid #888
+    font-size 18px
+    line-height 2rem
+.button
+    margin 0 auto
+    width auto
+    min-width 20%
+    padding 20px
+    border-radius 5px
+    border 0
+    background-color rgb(200, 200, 200)
+    cursor pointer
+.button:hover
+    background-color rgb(220, 220, 220)
+    background-color rgba(200, 200, 200, .7)
+.half
+    display block
+    width 100%
+
+@media only screen and (min-width: 600px)
+    .half
+        display inline-block
+        width 50%
+
 
 #error-message
     visibility hidden

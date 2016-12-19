@@ -3,21 +3,25 @@ extends template
 block content
     form#signup-form
         #error-message There was a problem submitting your form. Please try again later.
-        input.form-input(type='text' name='firstName' placeholder='First name')
-        input.form-input(type='text' name='lastName' placeholder='Last name')
+        input.form-input.half(type='text' name='firstName' placeholder='First name')
+        input.form-input.half(type='text' name='lastName' placeholder='Last name')
         input.form-input(type='number' name='classYear' placeholder='Class year')
         input.form-input(type='email' name='email' placeholder='Email'
-            onFocus='clearError(this)' onBlur='validateEmail()')
+                onFocus='clearError(this)' onBlur='validateEmail()')
         input.form-input(type='phone' name='phone' placeholder='Phone number*'
-            onFocus='clearError(this)' onBlur='validatePhone()')
-        select.form-input(name='phoneProvider' onFocus='clearError(this)')
+                onFocus='clearError(this)' onBlur='validatePhone()')
+        select.form-input.half(name='phoneProvider' onFocus='clearError(this)'
+                onchange='validateProvider()')
             option(value='null') --Select Provider*--
             option(value='verizon') Verizon
             option(value='att') AT&T
             option(value='tmobile') T-Mobile
             option(value='sprint') Sprint
             option(value='other') Other
-        button.form-input(type='button' onclick='submitForm()') Submit
+        input.form-input.half(type='text' name='other-provider' placeholder='Other'
+            style='display:none' onFocus='clearError(this)'
+            onBlur='validateProvider()')
+        button.form-input.button(type='button' onclick='submitForm()') Submit
     .modal#success
         .modal-content
             h2 Thank you for registering!

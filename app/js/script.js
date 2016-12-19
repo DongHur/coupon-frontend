@@ -76,6 +76,16 @@ function validateEmail() {
     return isValid;
 }
 
+// add field if 'Other' provider
+function validateProvider() {
+    if (document.getElementById('signup-form').phoneProvider.value === 'other')
+        // show field
+        console.log('hi')
+    else
+        //hide field
+        console.log('hi')
+}
+
 function clearForm() {
     var form = document.getElementById('signup-form');
     form.reset();
