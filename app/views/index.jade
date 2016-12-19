@@ -13,10 +13,9 @@ block content
         select.form-input.half(name='phoneProvider' onFocus='clearError(this)'
                 onchange='validateProvider()')
             option(value='null') --Select Provider*--
-            option(value='verizon') Verizon
-            option(value='att') AT&T
-            option(value='tmobile') T-Mobile
-            option(value='sprint') Sprint
+            -for(var i = 0; i < providers.length; i++)
+                -var p = providers[i];
+                option(value='#{p.name}')= p.longName
             option(value='other') Other
         input.form-input.half(type='text' name='other-provider' placeholder='Other'
             style='display:none' onFocus='clearError(this)'

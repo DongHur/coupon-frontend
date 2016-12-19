@@ -4,7 +4,7 @@ const request = require('request');
 const config = require('../app/models/config');
 
 router.get('/', (req, res, next) => {
-    return res.render('index');
+    return res.render('index', {providers: config.providers});
 });
 
 router.post('/', (req, res, next) => {
