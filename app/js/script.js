@@ -18,18 +18,18 @@ function submitForm() {
 
     var phone = validatePhone();
     if (!phone) {
-        error(form.phone);
         if (errorMessage) errorMessage += '</br>';
         errorMessage += 'Please enter valid phone number.';
     }
-    if (form.phoneProvider.value === 'null') {
-        error(form.phoneProvider);
+    if (!validateProvider()) {
         if (errorMessage) errorMessage += '</br>';
         errorMessage += 'Please select phone provider.';
     }
     if (errorMessage) return displayError(errorMessage);
     data.phone = phone;
     data.phoneProvider = form.phoneProvider.value;
+    if (data.phoneProvider === 'other')
+        data['other-provider'] = form['other-provider'].value;
 
     fetch('/', {
         headers: {
@@ -60,7 +60,7 @@ function validatePhone() {
             sanitized += phone[i];
     }
     if (sanitized.length !== 10) {
-        error(document.getElementById('signup-form').phone);
+        error(form.phone);
         return '';
     }
     return sanitized;
