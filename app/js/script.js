@@ -7,22 +7,27 @@ window.onclick = function(event) {
 function submitForm() {
     var form = document.getElementById('signup-form');
     var data = {};
-    var exit = false;
+    var errorMessage = '';
     if (form.firstName.value) data.firstName = form.firstName.value;
     if (form.lastName.value) data.lastName = form.lastName.value;
     if (form.classYear.value) data.classYear = form.classYear.value;
-    if (form.email.value && validateEmail()) data.email = form.email.value;
+    if (form.email.value && !validateEmail()) {
+        errorMessage += 'Email address is invalid.';
+    }
+    data.email = form.email.value;
 
     var phone = validatePhone();
     if (!phone) {
         error(form.phone);
-        exit = true;
+        if (errorMessage) errorMessage += '</br>';
+        errorMessage += 'Please enter valid phone number.';
     }
     if (form.phoneProvider.value === 'null') {
         error(form.phoneProvider);
-        exit = true;
+        if (errorMessage) errorMessage += '</br>';
+        errorMessage += 'Please select phone provider.';
     }
-    if (exit) return;
+    if (errorMessage) return displayError(errorMessage);
     data.phone = phone;
     data.phoneProvider = form.phoneProvider.value;
 
@@ -41,6 +46,8 @@ function error(target) {
 }
 
 function clearError(target) {
+    if (target === 'message')
+        document.getElementById('error-message').style.visibility = 'hidden';
     target.style.border = '1px solid #888';
 }
 
@@ -75,6 +82,7 @@ function clearForm() {
     clearError(form.email);
     clearError(form.phone);
     clearError(form.phoneProvider);
+    clearError('message');
 }
 
 function submitSuccess(res) {
@@ -90,6 +98,7 @@ function submitError(res) {
 }
 
 function displayError(message) {
-    document.getElementById('error-message').innerHTML = message;
+    var errorDiv = document.getElementById('error-message');
+    errorDiv.innerHTML = message;
+    errorDiv.style.visibility = 'visible';
 }
-
