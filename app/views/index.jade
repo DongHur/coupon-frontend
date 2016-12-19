@@ -1,6 +1,8 @@
 extends template
 
 block content
+    #navbar
+        a(href='/login').quiet-link.navbar-item Admin Login >
     form#signup-form
         #error-message There was a problem submitting your form. Please try again later.
         input.form-input.half(type='text' name='firstName' placeholder='First name')

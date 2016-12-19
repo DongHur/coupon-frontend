@@ -1,9 +1,29 @@
 @require "helpers"
 
+text-color = #000
+
 *
     box-sizing border-box
 html, body
     height 100%
+    margin 0
+    padding 0
+    color text-color
+
+.quiet-link, .quiet-link:visited, .quiet-link:active
+    color text-color
+    text-decoration none
+
+#navbar
+    text-align right
+.navbar-item
+    display inline-block
+    padding 1rem
+.navbar-item:hover
+    background-color rgb(220, 220, 220)
+    background-color rgba(200, 200, 200, .7)
+    cursor pointer
+
 
 #signup-form
     width 90%
@@ -45,7 +65,7 @@ html, body
     color red
     font-weight bold
     text-align left
-    margin 1rem 0
+    padding 1rem 0
 .modal
     display none
     position fixed

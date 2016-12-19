@@ -11,4 +11,8 @@ router.post('/', (req, res, next) => {
     request.post(config.apiUrl + '/users', {form: req.body}).pipe(res);
 });
 
+router.get('/login', (req, res, next) => {
+    return res.render('login');
+});
+
 module.exports = router;
