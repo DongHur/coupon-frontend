@@ -1,0 +1,10 @@
+extends template
+
+block content
+    #navbar.left
+        a(href='/').quiet-link.navbar-item < Back
+    form#js-login-form.form
+        #js-error-message.error-message
+        input.form-input(type='email' name='email' placeholder='Email')
+        input.form-input(type='password' name='password' placeholder='Password')
+        button.form-input.button(type='button' onclick='submitLogin()') Submit
