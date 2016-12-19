@@ -1,11 +1,11 @@
 var modal = document.getElementById('success');
+var form = document.getElementById('signup-form');
 // close modal if click outside
 window.onclick = function(event) {
     if (event.target === modal) modal.style.display = 'none';
 }
 
 function submitForm() {
-    var form = document.getElementById('signup-form');
     var data = {};
     var errorMessage = '';
     if (form.firstName.value) data.firstName = form.firstName.value;
@@ -53,7 +53,7 @@ function clearError(target) {
 
 // validates and returns the sanitized string
 function validatePhone() {
-    var phone = document.getElementById('signup-form').phone.value;
+    var phone = form.phone.value;
     var sanitized = '';
     for (var i = 0; i < phone.length; i++) {
         if (!isNaN(phone[i]) && phone[i] !== ' ')
@@ -68,7 +68,7 @@ function validatePhone() {
 
 // returns true iff valid
 function validateEmail() {
-    var emailInput = document.getElementById('signup-form').email;
+    var emailInput = form.email;
     if (!emailInput.value) return true;
     // http://emailregex.com/
     var isValid = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(emailInput.value);
@@ -78,16 +78,30 @@ function validateEmail() {
 
 // add field if 'Other' provider
 function validateProvider() {
-    if (document.getElementById('signup-form').phoneProvider.value === 'other')
-        // show field
-        console.log('hi')
-    else
-        //hide field
-        console.log('hi')
+    clearError(form.phoneProvider);
+    if (form.phoneProvider.value === 'other') {
+        if (form['other-provider'].style.display === 'none') {
+            form['other-provider'].style.display = 'inline-block';
+            return false;
+        }
+        else {
+            if (!form['other-provider'].value) {
+                error(form['other-provider']);
+                return false;
+            } else return true;
+        }
+    }
+    else {
+        form['other-provider'].style.display = 'none';
+        if (form.phoneProvider.value === 'null') {
+            error(form.phoneProvider);
+            return false;
+        }
+        return true;
+    }
 }
 
 function clearForm() {
-    var form = document.getElementById('signup-form');
     form.reset();
     clearError(form.email);
     clearError(form.phone);
