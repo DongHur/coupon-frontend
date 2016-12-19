@@ -1,5 +1,5 @@
-var modal = document.getElementById('success');
-var form = document.getElementById('signup-form');
+var modal = document.getElementById('js-success');
+var form = document.getElementById('js-signup-form');
 // close modal if click outside
 window.onclick = function(event) {
     if (event.target === modal) modal.style.display = 'none';
@@ -47,7 +47,7 @@ function error(target) {
 
 function clearError(target) {
     if (target === 'message')
-        return document.getElementById('error-message').style.visibility = 'hidden';
+        return document.getElementById('js-error-message').style.visibility = 'hidden';
     target.style.border = '1px solid #888';
 }
 
@@ -122,7 +122,7 @@ function submitError(res) {
 }
 
 function displayError(message) {
-    var errorDiv = document.getElementById('error-message');
+    var errorDiv = document.getElementById('js-error-message');
     errorDiv.innerHTML = message;
     errorDiv.style.visibility = 'visible';
 }

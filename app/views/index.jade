@@ -3,8 +3,8 @@ extends template
 block content
     #navbar
         a(href='/login').quiet-link.navbar-item Admin Login >
-    form#signup-form
-        #error-message There was a problem submitting your form. Please try again later.
+    form#js-signup-form.form
+        #js-error-message.error-message
         input.form-input.half(type='text' name='firstName' placeholder='First name')
         input.form-input.half(type='text' name='lastName' placeholder='Last name')
         input.form-input(type='number' name='classYear' placeholder='Class year')
@@ -23,7 +23,7 @@ block content
             style='display:none' onFocus='clearError(this)'
             onBlur='validateProvider()')
         button.form-input.button(type='button' onclick='submitForm()') Submit
-    .modal#success
+    .modal#js-success
         .modal-content
             h2 Thank you for registering!
             p Some great coupons will be heading your way
