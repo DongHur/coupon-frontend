@@ -149,13 +149,8 @@ function submitCouponForm() {
         },
         method: 'POST',
         body: JSON.stringify(data)
-    }).then(function(res) {
-        return res.json();
-    }).then(function(res) {
-        console.log('Success!');
-    }).catch(function(err) {
-        displayError('There was a problem submitting your request. Please try again later.');
-    });
+    }).then(submitSuccess)
+    .catch(submitError);
 }
 
 function error(target) {
@@ -220,9 +215,6 @@ function validateProvider() {
 
 function clearForm() {
     form.reset();
-    clearError(form.email);
-    clearError(form.phone);
-    clearError(form.phoneProvider);
     clearError('message');
 }
 
