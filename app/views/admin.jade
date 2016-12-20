@@ -10,9 +10,9 @@ block content
             onfocus='clearError(this)')
         input.form-input(type='text' name='url' placeholder='Url'
             onfocus='clearError(this)')
-        .js-date-input.form-input(name='startDate')
-        label.form-input.half #[input(type='checkbox' name='hasEndDate')] Expires
-        .js-date-input.half.hidden(name='endDate')
+        .js-date-input.date-input.form-input(name='startDate') Start date:
+        label.form-input.half #[input(type='checkbox' name='hasEndDate' onchange='toggleEndDate()')] Expires
+        .js-date-input.date-input.half.hidden(name='endDate')
         button.form-input.button(type='button' onclick='submitCouponForm()') Submit
     .modal#js-success
         .modal-content

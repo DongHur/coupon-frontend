@@ -28,11 +28,14 @@ html, body
     background-color rgba(200, 200, 200, .7)
     cursor pointer
 
-
 .form
     width 90%
     max-width 600px
     margin 0 auto
+.form-title
+    width 100%
+    margin 0
+    text-align center
 .form-input
     display block
     width 100%
@@ -54,15 +57,26 @@ html, body
 .button:hover
     background-color rgb(220, 220, 220)
     background-color rgba(200, 200, 200, .7)
+
+.month-select, .day-select, .year-select
+    margin 0 .4rem
+    padding 5px
+    border-radius 5px
+    font-size 18px
+    line-height 2rem
+.date-input
+    color #a9a9a9
+
 .half
     display block
     width 100%
-
 @media only screen and (min-width: 600px)
     .half
         display inline-block
         width 50%
 
+.hidden
+    display none
 
 .error-message
     visibility hidden

@@ -219,3 +219,10 @@ function generateDaysSelect() {
         days.appendChild(day);
     }
 }
+
+function toggleEndDate() {
+    var div = document.getElementsByName('endDate')[0];
+    if (div.style.display !== 'inline-block')
+        return div.style.display = 'inline-block';
+    return div.style.display = '';
+}
