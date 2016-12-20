@@ -1,0 +1,21 @@
+extends template
+
+block content
+    #navbar.right
+        a(href='/logout').quiet-link.navbar-item Logout
+    form#js-coupon-form.form
+        .form-title Create Coupon
+        #js-error-message.error-message
+        input.form-input(type='text' name='name' placeholder='Coupon name'
+            onfocus='clearError(this)')
+        input.form-input(type='text' name='url' placeholder='Url'
+            onfocus='clearError(this)')
+        input#js-date-input(name='startDate')
+        label #[input(type='checkbox' name='hasEndDate')] Expires
+        input#js-date-input.hidden(name='endDate')
+        button.form-input.button(type='button' onclick='submitCouponForm()') Submit
+    .modal#js-success
+        .modal-content
+            h2 Thank you for adding this coupon
+            p We will deliver it once it's approved
+

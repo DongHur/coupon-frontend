@@ -22,4 +22,12 @@ router.all('/logout', (req, res, next) => {
     return res.render('logout');
 });
 
+router.get('/admin', auth.adminRequired, (req, res, next) => {
+    if (req.user.isAdmin)
+        return res.render('admin');
+    if (req.user.isSuperAdmin)
+        return res.render('admin');
+    return res.render('logout');
+});
+
 module.exports = router;
