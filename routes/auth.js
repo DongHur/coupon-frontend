@@ -28,5 +28,6 @@ function validateToken(req, res, next, c) {
     if (!decoded.id) return res.redirect('/logout');
 
     req.user = decoded;
+    req.token = token;
     next();
 }

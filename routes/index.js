@@ -24,9 +24,9 @@ router.all('/logout', (req, res, next) => {
 
 router.get('/admin', auth.adminRequired, (req, res, next) => {
     if (req.user.isAdmin)
-        return res.render('admin');
+        return res.render('admin', {token: req.token});
     if (req.user.isSuperAdmin)
-        return res.render('admin');
+        return res.render('admin', {token: req.token});
     return res.render('logout');
 });
 

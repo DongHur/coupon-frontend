@@ -7,3 +7,5 @@ html
   body
     block content
     script(src='/js/script.min.js')
+    if token
+        script localStorage.token = "#{token}"
