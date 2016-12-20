@@ -1,5 +1,5 @@
 var modal = document.getElementById('js-success');
-var form = document.getElementById('js-signup-form');
+var form = document.forms[0];
 // close modal if click outside
 window.onclick = function(event) {
     if (event.target === modal) modal.style.display = 'none';
@@ -39,6 +39,36 @@ function submitForm() {
         body: JSON.stringify(data)
     }).then(submitSuccess)
     .catch(submitError);
+}
+
+function submitLogin() {
+    var errorMessage = '';
+    if (!form.email.value) {
+        error(form.email);
+        errorMessage = 'Missing email.';
+    }
+    if (!form.password.value) {
+        error(form.password);
+        if (errorMessage) errorMessage += '</br>';
+        errorMessage += 'Missing password.';
+    }
+    if (errorMessage) return displayError(errorMessage);
+    var data = {
+        email: form.email.value,
+        password: form.password.value
+    };
+
+    fetch('/login', {
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        method: 'POST',
+        body: JSON.stringify(data)
+    }).then(function(res) {
+        return res.json();
+    }).then(function(res) {
+        localStorage.token = res.token;
+    }).catch(submitError);
 }
 
 function error(target) {
@@ -115,9 +145,11 @@ function submitSuccess(res) {
     clearForm();
 }
 
-function submitError(res) {
+function submitError(res, message) {
     if (res.status === 400)
         return res.text().then(function(message) {displayError(message)});
+    if (message)
+        return displayError(message);
     return displayError('There was a problem submitting your form. Please try again later.');
 }
 

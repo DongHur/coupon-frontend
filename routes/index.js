@@ -15,4 +15,8 @@ router.get('/login', (req, res, next) => {
     return res.render('login');
 });
 
+router.post('/login', (req, res, next) => {
+    request.post(config.apiUrl + '/auth/token', {form: req.body}).pipe(res);
+});
+
 module.exports = router;

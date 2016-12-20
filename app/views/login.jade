@@ -5,6 +5,8 @@ block content
         a(href='/').quiet-link.navbar-item < Back
     form#js-login-form.form
         #js-error-message.error-message
-        input.form-input(type='email' name='email' placeholder='Email')
-        input.form-input(type='password' name='password' placeholder='Password')
+        input.form-input(type='email' name='email' placeholder='Email'
+            onfocus='clearError(this)')
+        input.form-input(type='password' name='password' placeholder='Password'
+            onfocus='clearError(this)')
         button.form-input.button(type='button' onclick='submitLogin()') Submit
