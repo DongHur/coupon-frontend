@@ -2,6 +2,8 @@ extends template
 
 block content
     #navbar.right
+        if isSuperAdmin
+            a(href='/admin/users').quiet-link.navbar-item Create User
         a(href='/logout').quiet-link.navbar-item Logout
     form#js-coupon-form.form
         h1.form-title Create Coupon

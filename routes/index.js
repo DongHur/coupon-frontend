@@ -29,7 +29,7 @@ router.get('/admin', auth.adminRequired, (req, res, next) => {
 });
 
 router.get('/admin/coupons', auth.adminRequired, (req, res, next) => {
-    return res.render('admin', {token: req.token, isSuperAdmin: !!req.user.isSuperAdmin});
+    return res.render('coupons', {token: req.token, isSuperAdmin: !!req.user.isSuperAdmin});
 });
 
 
