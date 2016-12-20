@@ -31,8 +31,6 @@ router.get('/admin', auth.adminRequired, (req, res, next) => {
 router.get('/admin/coupons', auth.adminRequired, (req, res, next) => {
     return res.render('coupons', {token: req.token, isSuperAdmin: !!req.user.isSuperAdmin});
 });
-
-
 router.post('/admin/coupons', auth.adminRequired, (req, res, next) => {
     req.body.postedBy = req.user.id;
     req.body.companyName = req.user.companyName;
@@ -41,6 +39,11 @@ router.post('/admin/coupons', auth.adminRequired, (req, res, next) => {
         headers: {'x-access-token': req.token},
         form: req.body
     }).pipe(res);
+});
+
+router.get('/admin/users', auth.adminRequired, (req, res, next) => {
+    if (!req.user.isSuperAdmin) return res.redirect('/admin?token' + req.token);
+    return res.render('users', {token: req.token, providers: config.providers});
 });
 
 module.exports = router;
