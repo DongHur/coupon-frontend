@@ -217,6 +217,9 @@ function validateProvider() {
 function clearForm() {
     form.reset();
     clearError('message');
+    var divs = document.getElementsByClassName('hidden');
+    for (var i = 0; i < divs.length; i++)
+        divs[i].style.display = '';
 }
 
 function submitSuccess(res) {
