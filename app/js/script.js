@@ -118,9 +118,9 @@ function submitCouponForm() {
         error(form.name);
     }
     data.name = form.name.value;
-    if (!form.url.value) {
+    if (!validateUrl(form.url)) {
         if (errorMessage) errorMessage += '<br/>';
-        errorMessage += 'Please enter coupon url.';
+        errorMessage += 'Please enter valid coupon url.';
         error(form.url);
     }
     data.url = form.url.value;
@@ -212,6 +212,13 @@ function validateProvider() {
         }
         return true;
     }
+}
+
+function validateUrl(target) {
+    clearError(target);
+    var isValid = /^.+\.[a-zA-Z]{2,}/.test(target.value);
+    if (!isValid) error(target);
+    return isValid;
 }
 
 function clearForm() {

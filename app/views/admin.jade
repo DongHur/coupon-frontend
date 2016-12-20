@@ -9,7 +9,7 @@ block content
         input.form-input(type='text' name='name' placeholder='Coupon name'
             onfocus='clearError(this)')
         input.form-input(type='text' name='url' placeholder='Url'
-            onfocus='clearError(this)')
+            onfocus='clearError(this)' onblur='validateUrl(this)')
         label.form-input Start date:
             .js-date-input.date-input(name='startDate')
         label.form-input #[input(type='checkbox' name='hasEndDate' onchange='toggleEndDate()')] Expires
