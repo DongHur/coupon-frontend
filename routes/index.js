@@ -30,4 +30,14 @@ router.get('/admin', auth.adminRequired, (req, res, next) => {
     return res.render('logout');
 });
 
+router.post('/coupon', auth.adminRequired, (req, res, next) => {
+    req.body.postedBy = req.user.id;
+    req.body.companyName = req.user.companyName;
+    request.post({
+        url: config.apiUrl + '/coupons',
+        headers: {'x-access-token': req.token},
+        form: req.body
+    }).pipe(res);
+});
+
 module.exports = router;
