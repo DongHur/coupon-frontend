@@ -106,6 +106,7 @@ function submitLogin() {
         return res.json();
     }).then(function(res) {
         localStorage.token = res.token;
+        window.location = '/admin?token=' + res.token;
     }).catch(submitError);
 }
 
