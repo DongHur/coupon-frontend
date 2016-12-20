@@ -109,6 +109,55 @@ function submitLogin() {
     }).catch(submitError);
 }
 
+function submitCouponForm() {
+    var errorMessage = '';
+    var data = {};
+    if (!form.name.value) {
+        errorMessage = 'Please enter coupon name.';
+        error(form.name);
+    }
+    data.name = form.name.value;
+    if (!form.url.value) {
+        if (errorMessage) errorMessage += '<br/>';
+        errorMessage += 'Please enter coupon url.';
+        error(form.url);
+    }
+    data.url = form.url.value;
+    var startDate = getDate(document.getElementsByName('startDate')[0]);
+    if (!startDate) {
+        if (errorMessage) errorMessage += '</br>'
+        errorMessage += 'Please enter valid start date.'
+        error(document.getElementsByName('startDate')[0]);
+    }
+    data.startDate = startDate;
+    if (form.hasEndDate.checked) {
+        var endDate = getDate(document.getElementsByName('endDate')[0]);
+        if (!endDate) {
+            if (errorMessage) errorMessage += '</br>'
+            errorMessage += 'Please enter valid expiration date.'
+            error(document.getElementsByName('endDate')[0]);
+        }
+        data.endDate = endDate;
+    }
+
+    if (errorMessage) return displayError(errorMessage);
+
+    fetch('/coupon', {
+        headers: {
+            'Content-Type': 'application/json',
+            'x-access-token': localStorage.token,
+        },
+        method: 'POST',
+        body: JSON.stringify(data)
+    }).then(function(res) {
+        return res.json();
+    }).then(function(res) {
+        console.log('Success!');
+    }).catch(function(err) {
+        displayError('There was a problem submitting your request. Please try again later.');
+    });
+}
+
 function error(target) {
     target.style.border = '3px solid #F00';
 }
@@ -218,6 +267,21 @@ function generateDaysSelect() {
         day.innerHTML = day.value;
         days.appendChild(day);
     }
+}
+
+function getDate(target) {
+    var children = target.childNodes;
+    for (var i = 0; i < children.length; i++) {
+        var child = children[i];
+        if (child.className === 'month-select')
+            var month = child.value;
+        else if (child.className === 'year-select')
+            var year = child.value;
+        else if (child.className === 'day-select')
+            var day = child.value;
+    }
+    if (!month || !year || !day) return null;
+    return new Date(year, month - 1, day);
 }
 
 function toggleEndDate() {
