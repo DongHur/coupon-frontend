@@ -143,7 +143,7 @@ function submitCouponForm() {
 
     if (errorMessage) return displayError(errorMessage);
 
-    fetch('/coupon', {
+    fetch('/admin/coupons', {
         headers: {
             'Content-Type': 'application/json',
             'x-access-token': localStorage.token,

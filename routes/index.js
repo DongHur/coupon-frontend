@@ -23,14 +23,17 @@ router.all('/logout', (req, res, next) => {
 });
 
 router.get('/admin', auth.adminRequired, (req, res, next) => {
-    if (req.user.isAdmin)
-        return res.render('admin', {token: req.token});
-    if (req.user.isSuperAdmin)
-        return res.render('admin', {token: req.token});
+    if (req.user.isAdmin || req.user.isSuperAdmin)
+        return res.redirect('/admin/coupons?token=' + req.token);
     return res.render('logout');
 });
 
-router.post('/coupon', auth.adminRequired, (req, res, next) => {
+router.get('/admin/coupons', auth.adminRequired, (req, res, next) => {
+    return res.render('admin', {token: req.token, isSuperAdmin: !!req.user.isSuperAdmin});
+});
+
+
+router.post('/admin/coupons', auth.adminRequired, (req, res, next) => {
     req.body.postedBy = req.user.id;
     req.body.companyName = req.user.companyName;
     request.post({
