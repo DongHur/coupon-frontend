@@ -43,23 +43,27 @@ window.onclick = function(event) {
     if (event.target === modal) modal.style.display = 'none';
 }
 
+// =============================================================
+// Form submit functions
+// =============================================================
+
 function submitForm() {
     var data = {};
     var errorMessage = '';
     if (form.firstName.value) data.firstName = form.firstName.value;
     if (form.lastName.value) data.lastName = form.lastName.value;
     if (form.classYear.value) data.classYear = form.classYear.value;
-    if (form.email.value && !validateEmail()) {
+    if (form.email.value && !validateEmail(form.email)) {
         errorMessage += 'Email address is invalid.';
     }
     data.email = form.email.value;
 
-    var phone = validatePhone();
+    var phone = validatePhone(form.phone, true);
     if (!phone) {
         if (errorMessage) errorMessage += '</br>';
         errorMessage += 'Please enter valid phone number.';
     }
-    if (!validateProvider()) {
+    if (!validateProvider(true)) {
         if (errorMessage) errorMessage += '</br>';
         errorMessage += 'Please select phone provider.';
     }
@@ -118,7 +122,7 @@ function submitCouponForm() {
         error(form.name);
     }
     data.name = form.name.value;
-    if (!validateUrl(form.url)) {
+    if (!validateUrl(form.url, true)) {
         if (errorMessage) errorMessage += '<br/>';
         errorMessage += 'Please enter valid coupon url.';
         error(form.url);
@@ -164,13 +168,13 @@ function submitUser() {
     if (form.firstName.value) data.firstName = form.firstName.value;
     if (form.lastName.value) data.lastName = form.lastName.value;
     if (form.classYear.value) data.classYear = form.classYear.value;
-    if (!validateEmail()) {
+    if (!validateEmail(form.email, true)) {
         errorMessage += 'Email address is invalid.';
     }
     data.email = form.email.value;
 
     if (form.phone.value) {
-        var phone = validatePhone();
+        var phone = validatePhone(form.phone);
         if (!phone) {
             if (errorMessage) errorMessage += '</br>';
             errorMessage += 'Please enter valid phone number.';
@@ -221,6 +225,10 @@ function submitUser() {
     .catch(submitError);
 }
 
+// =============================================================
+// Form validation functions
+// =============================================================
+
 function error(target) {
     target.style.border = '3px solid #F00';
 }
@@ -232,34 +240,35 @@ function clearError(target) {
 }
 
 // validates and returns the sanitized string
-function validatePhone() {
-    var phone = form.phone.value;
+function validatePhone(target, isRequired) {
+    var phone = target.value;
+    if (!phone && !isRequired) return '';
     var sanitized = '';
     for (var i = 0; i < phone.length; i++) {
         if (!isNaN(phone[i]) && phone[i] !== ' ')
             sanitized += phone[i];
     }
     if (sanitized.length !== 10) {
-        error(form.phone);
+        error(target);
         return '';
     }
     return sanitized;
 }
 
 // returns true iff valid
-function validateEmail() {
-    var emailInput = form.email;
-    if (!emailInput.value) return true;
+function validateEmail(target, isRequired) {
+    var email = target.value;
+    if (!email && !isRequired) return true;
     // http://emailregex.com/
-    var isValid = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(emailInput.value);
-    if (!isValid) error(emailInput);
+    var isValid = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email);
+    if (!isValid) error(target);
     return isValid;
 }
 
 // add field if 'Other' provider
-function validateProvider() {
-    clearError(form.phoneProvider);
-    if (form.phoneProvider.value === 'other') {
+function validateProvider(isRequired) {
+    var target = form.phoneProvider;
+    if (target.value === 'other') {
         if (form['other-provider'].style.display === 'none') {
             form['other-provider'].style.display = 'inline-block';
             return false;
@@ -273,7 +282,7 @@ function validateProvider() {
     }
     else {
         form['other-provider'].style.display = 'none';
-        if (form.phoneProvider.value === 'null') {
+        if (form.phoneProvider.value === 'null' && isRequired) {
             error(form.phoneProvider);
             return false;
         }
@@ -281,8 +290,8 @@ function validateProvider() {
     }
 }
 
-function validateUrl(target) {
-    clearError(target);
+function validateUrl(target, isRequired) {
+    if (!target.value && !isRequired) return true;
     var isValid = /^.+\.[a-zA-Z]{2,}/.test(target.value);
     if (!isValid) error(target);
     return isValid;
@@ -295,6 +304,10 @@ function clearForm() {
     for (var i = 0; i < divs.length; i++)
         divs[i].style.display = '';
 }
+
+// =============================================================
+// Form submit callbacks
+// =============================================================
 
 function submitSuccess(res) {
     if (!res.ok) return submitError(res);
@@ -315,6 +328,10 @@ function displayError(message) {
     errorDiv.innerHTML = message;
     errorDiv.style.visibility = 'visible';
 }
+
+// =============================================================
+// Date helper functions
+// =============================================================
 
 function generateDaysSelect() {
     var children = this.childNodes;
