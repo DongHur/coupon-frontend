@@ -45,8 +45,7 @@ router.post('/admin/coupons', auth.adminRequired, (req, res, next) => {
     }).pipe(res);
 });
 
-router.get('/admin/users', auth.adminRequired, (req, res, next) => {
-    if (!req.user.isSuperAdmin) return res.redirect('/admin?token' + req.token);
+router.get('/admin/users', auth.superAdminRequired, (req, res, next) => {
     return res.render('users', {token: req.token, providers: config.providers});
 });
 router.post('/admin/users', auth.adminRequired, (req, res, next) => {
@@ -55,6 +54,22 @@ router.post('/admin/users', auth.adminRequired, (req, res, next) => {
         url: config.apiUrl + '/admins',
         headers: {'x-access-token': req.token},
         form: req.body
+    }).pipe(res);
+});
+
+router.get('/admin/manage', auth.superAdminRequired, (req, res, next) => {
+    return res.render('manage', {token: req.token});
+});
+router.get('/admin/manage/unapproved', auth.superAdminRequired, (req, res, next) => {
+    request.get({
+        url: config.apiUrl + '/admins/coupons',
+        headers: {'x-access-token': req.token},
+    }).pipe(res);
+});
+router.get('/admin/manage/active', auth.superAdminRequired, (req, res, next) => {
+    request.get({
+        url: config.apiUrl + '/coupons',
+        headers: {'x-access-token': req.token},
     }).pipe(res);
 });
 
