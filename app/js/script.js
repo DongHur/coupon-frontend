@@ -317,7 +317,7 @@ function submitSuccess(res) {
 }
 
 function submitError(res, message) {
-    if (res.status === 400)
+    if (res.status >= 400 && res.status < 500)
         return res.text().then(function(message) {displayError(message)});
     if (message)
         return displayError(message);
