@@ -72,7 +72,7 @@ function populate(target, coupons) {
             }(c,div);
             button.innerHTML = 'Approve';
         } else if (target === active) {
-            button.onclick = function (x) {return function() {console.log(x)}}(c._id);
+            button.onclick = function (x) {return function() {sendTexts(x)}}(c._id);
             button.innerHTML = 'Send texts';
         }
 
@@ -101,6 +101,36 @@ function approveCoupon(coupon, couponDiv) {
         addError(unapproved, err);
     });
 }
+
+function sendTexts(id) {
+    if (localStorage.sentTexts && localStorage.sentTexts.indexOf(id) !== -1) {
+        var c = confirm("You've already sent texts for this coupon. Send again?");
+        if (!c) return;
+    }
+    fetch('/admin/manage/active', {
+        headers: {
+            'x-access-token': localStorage.token,
+            'Content-Type': 'application/json'
+        },
+        method: 'POST',
+        body: JSON.stringify({id: id})
+    }).then(function(res) {
+        if (!res.ok) throw new Error('There was an error sending the texts');
+        return res.json();
+    }).then(function(info) {
+        showModal(info);
+        if (!localStorage.sentTexts) localStorage.sentTexts = [id];
+        else if (!c) localStorage.sentTexts.push(id);
+    }).catch(function (err) {
+        addError(active, err)
+    });
+}
+
+function showModal(info) {
+    document.getElementById('js-success').style.display = 'block';
+    document.getElementById('js-info').innerHTML = JSON.stringify(info);
+}
+
 
 function formatDate(date) {
     var d = new Date(date);
