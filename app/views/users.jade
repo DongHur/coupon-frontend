@@ -11,9 +11,9 @@ block content
         input.form-input.half(type='text' name='lastName' placeholder='Last name')
         input.form-input(type='number' name='classYear' placeholder='Class year')
         input.form-input(type='email' name='email' placeholder='Email'
-                onFocus='clearError(this)' onBlur='validateEmail()')
+                onFocus='clearError(this)' onBlur='validateEmail(this, form.isAdmin.checked || form.isSuperAdmin.checked)')
         input.form-input(type='phone' name='phone' placeholder='Phone number'
-                onFocus='clearError(this)' onBlur='validatePhone()')
+                onFocus='clearError(this)' onBlur='validatePhone(this)')
         select.form-input.half(name='phoneProvider' onFocus='clearError(this)'
                 onchange='validateProvider()')
             option(value='null') --Select Provider--
