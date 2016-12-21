@@ -107,10 +107,11 @@ function submitLogin() {
         method: 'POST',
         body: JSON.stringify(data)
     }).then(function(res) {
-        return res.json();
-    }).then(function(res) {
-        localStorage.token = res.token;
-        window.location = '/admin?token=' + res.token;
+        if (!res.ok) return submitError(res);
+        else return res.json().then(function(result) {
+            localStorage.token = result.token;
+            window.location = '/admin?token=' + result.token;
+        });
     }).catch(submitError);
 }
 
