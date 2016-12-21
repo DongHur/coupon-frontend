@@ -34,7 +34,7 @@ function addError(target, err) {
     var div = document.createElement('h3');
     div.setAttribute('class', 'error center');
     div.innerHTML = err.message;
-    target.appendChild(div);
+    target.insertBefore(div, target.firstChild.nextSibling);
 }
 
 function populate(target, coupons) {
@@ -78,7 +78,10 @@ function populate(target, coupons) {
 
         div.appendChild(info);
         div.appendChild(button);
-        target.appendChild(div);
+        if (coupons.length === 1)
+            target.insertBefore(div, target.firstChild.nextSibling)
+        else
+            target.appendChild(div);
     }
 }
 
@@ -95,7 +98,7 @@ function approveCoupon(coupon, couponDiv) {
         couponDiv.parentNode.removeChild(couponDiv);
         populate(active, [coupon]);
     }).catch(function(err) {
-        console.log(err);
+        addError(unapproved, err);
     });
 }
 
