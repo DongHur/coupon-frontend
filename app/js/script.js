@@ -154,6 +154,73 @@ function submitCouponForm() {
     .catch(submitError);
 }
 
+function submitUser() {
+    // if not admin, just submit as user form
+    if (!form.isAdmin.checked && !form.isSuperAdmin.checked)
+        return submitForm();
+
+    var data = {};
+    var errorMessage = '';
+    if (form.firstName.value) data.firstName = form.firstName.value;
+    if (form.lastName.value) data.lastName = form.lastName.value;
+    if (form.classYear.value) data.classYear = form.classYear.value;
+    if (!validateEmail()) {
+        errorMessage += 'Email address is invalid.';
+    }
+    data.email = form.email.value;
+
+    if (form.phone.value) {
+        var phone = validatePhone();
+        if (!phone) {
+            if (errorMessage) errorMessage += '</br>';
+            errorMessage += 'Please enter valid phone number.';
+        }
+        data.phone = phone;
+        if (!validateProvider()) {
+            if (errorMessage) errorMessage += '</br>';
+            errorMessage += 'Please select phone provider.';
+        }
+        data.phoneProvider = form.phoneProvider.value;
+        if (data.phoneProvider === 'other')
+            data['other-provider'] = form['other-provider'].value;
+    }
+
+    if (!form.password.value) {
+        error(form.password);
+        if (errorMessage) errorMessage += '<br/>';
+        errorMessage += 'Please include password.';
+    }
+    if (!form.passwordConfirm.value) {
+        error(form.passwordConfirm);
+        if (errorMessage) errorMessage += '<br/>';
+        errorMessage += 'Please confirm password.';
+    }
+    else if (form.password.value !== form.passwordConfirm.value) {
+        error(form.passwordConfirm);
+        if (errorMessage) errorMessage += '<br/>';
+        errorMessage += "Passwords don't match.";
+    }
+    if (!form.companyName.value) {
+        error(form.companyName);
+        if (errorMessage) errorMessage += '<br/>';
+        errorMessage += 'Please include company name.';
+    }
+    data.password = form.password.value;
+    data.companyName = form.companyName.value;
+
+    if (errorMessage) return displayError(errorMessage);
+
+    fetch('/admin/users', {
+        headers: {
+            'Content-Type': 'application/json',
+            'x-access-token': localStorage.token
+        },
+        method: 'POST',
+        body: JSON.stringify(data)
+    }).then(submitSuccess)
+    .catch(submitError);
+}
+
 function error(target) {
     target.style.border = '3px solid #F00';
 }
@@ -292,4 +359,11 @@ function toggleEndDate() {
     if (div.style.display !== 'inline-block')
         return div.style.display = 'inline-block';
     return div.style.display = '';
+}
+
+function toggleAdminInfo() {
+    if (form.isAdmin.checked || form.isSuperAdmin.checked)
+        document.getElementById('js-admin-info').style.display = 'block';
+    else
+        document.getElementById('js-admin-info').style.display = '';
 }

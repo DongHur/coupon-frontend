@@ -45,5 +45,13 @@ router.get('/admin/users', auth.adminRequired, (req, res, next) => {
     if (!req.user.isSuperAdmin) return res.redirect('/admin?token' + req.token);
     return res.render('users', {token: req.token, providers: config.providers});
 });
+router.post('/admin/users', auth.adminRequired, (req, res, next) => {
+    if (!req.user.isSuperAdmin) return res.status(403).send('Superadmin privileges required');
+    request.post({
+        url: config.apiUrl + '/admins',
+        headers: {'x-access-token': req.token},
+        form: req.body
+    }).pipe(res);
+});
 
 module.exports = router;
