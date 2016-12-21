@@ -16,9 +16,13 @@ module.exports = function(grunt) {
                 options: {
                     reserveDOMProperties: true,
                 },
-                files: {
-                    'public/js/script.min.js': ['app/js/script.js']
-                }
+                files: [{
+                    expand: true,
+                    cwd: 'app/js',
+                    src: '**/*.js',
+                    dest: 'public/js',
+                    ext: '.min.js'
+                }]
             }
         },
 
