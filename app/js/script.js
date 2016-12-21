@@ -47,6 +47,21 @@ window.onclick = function(event) {
 // Form submit functions
 // =============================================================
 
+function submitOnEnterKey(submitFunction, targetForm) {
+    targetForm = targetForm || form;
+    var runOnKeydown = function(e) { if (e.keyCode === 13) submitFunction(); }
+    var children = targetForm.childNodes;
+    for (var i = 0; i < children.length; i++) {
+        var child = children[i];
+        if (child.id && child.id === 'js-admin-info')
+            submitOnEnterKey(submitFunction, child);
+        var type = child.getAttribute('type');
+        if (type === 'text' || type === 'email' || type === 'password' ||
+                type === 'number' || type === 'phone')
+            child.onkeydown = runOnKeydown;
+    }
+}
+
 function submitForm() {
     var data = {};
     var errorMessage = '';

@@ -11,3 +11,6 @@ block content
         input.form-input(type='password' name='password' placeholder='Password'
             onfocus='clearError(this)')
         button.form-input.button(type='button' onclick='submitLogin()') Submit
+
+block postScript
+    script submitOnEnterKey(submitLogin);
