@@ -1,6 +1,7 @@
 @require "helpers"
 
 text-color = #000
+mobile-width = 600px
 
 *
     box-sizing border-box
@@ -81,7 +82,7 @@ html, body
 .half
     display block
     width 100%
-@media only screen and (min-width: 600px)
+@media only screen and (min-width: mobile-width)
     .half
         display inline-block
         width 50%
@@ -114,3 +115,19 @@ html, body
     background-color white
     border-radius 5px
     text-align center
+
+.coupon
+    margin 0 auto 1rem auto
+    padding .5rem
+    max-width 600px
+    border 1px solid #888
+    border-radius 5px
+.coupon-info
+    display block
+.coupon-name
+    font-size 1.25rem
+    font-weight bold
+@media only screen and (min-width: mobile-width)
+    .coupon-info
+        display inline-block
+        max-width 75%
