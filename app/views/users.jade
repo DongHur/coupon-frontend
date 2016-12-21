@@ -2,6 +2,8 @@ extends template
 
 block content
     #navbar.right
+      .navbar-item-wrap
+        a(href='/admin/manage?token=#{token}').quiet-link.navbar-item Manage Coupons
         a(href='/admin/coupons?token=#{token}').quiet-link.navbar-item Create Coupon
         a(href='/logout').quiet-link.navbar-item Logout
     form#js-user-form.form
