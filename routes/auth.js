@@ -12,20 +12,20 @@ exports.superAdminRequired = (req, res, next) => {
 function validateToken(req, res, next, c) {
     var token = req.body.token || req.query.token || req.headers['x-access-token'];
 
-    if (!token) return res.redirect('/logout');
+    if (!token) return res.redirect(403, '/logout');
 
     try {
         var decoded = jwt.decode(token, config.secret);
     } catch(err) {
-        return res.redirect('/logout');
+        return res.redirect(403, '/logout');
     }
 
     if (c.adminRequired && !decoded.isAdmin && !decoded.isSuperAdmin)
-        return res.redirect('/logout');
+        return res.redirect(403, '/logout');
     if (c.superAdminRequired && !decoded.isSuperAdmin)
-        return res.redirect('/logout');
+        return res.redirect(403, '/admin?token=' + token);
 
-    if (!decoded.id) return res.redirect('/logout');
+    if (!decoded.id) return res.redirect(403, '/logout');
 
     req.user = decoded;
     req.token = token;
