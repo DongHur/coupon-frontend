@@ -66,6 +66,13 @@ router.get('/admin/manage/unapproved', auth.superAdminRequired, (req, res, next)
         headers: {'x-access-token': req.token},
     }).pipe(res);
 });
+router.post('/admin/manage/unapproved', auth.superAdminRequired, (req, res, next) => {
+    if (!req.body.id) return res.status(400).send('No ID');
+    request.post({
+        url: config.apiUrl + '/coupons/' + req.body.id,
+        headers: {'x-access-token': req.token},
+    }).pipe(res);
+});
 router.get('/admin/manage/active', auth.superAdminRequired, (req, res, next) => {
     request.get({
         url: config.apiUrl + '/coupons',

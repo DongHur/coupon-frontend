@@ -37,7 +37,7 @@ function addError(target, err) {
     target.appendChild(div);
 }
 
-function populate(target, coupons, button) {
+function populate(target, coupons) {
     for (var i = 0; i < coupons.length; i++) {
         var c = coupons[i];
         var div = document.createElement('div');
@@ -63,10 +63,40 @@ function populate(target, coupons, button) {
             life.innerHTML += ' ' + formatDate(c.endDate);
         info.appendChild(life);
 
+        var button = document.createElement('button');
+        button.setAttribute('class', 'coupon-button button');
+        button.setAttribute('type', 'button');
+        if (target === unapproved) {
+            button.onclick = function (x,y) {
+                return function() {approveCoupon(x,y)}
+            }(c,div);
+            button.innerHTML = 'Approve';
+        } else if (target === active) {
+            button.onclick = function (x) {return function() {console.log(x)}}(c._id);
+            button.innerHTML = 'Send texts';
+        }
 
         div.appendChild(info);
+        div.appendChild(button);
         target.appendChild(div);
     }
+}
+
+function approveCoupon(coupon, couponDiv) {
+    fetch('/admin/manage/unapproved', {
+        headers: {
+            'x-access-token': localStorage.token,
+            'Content-Type': 'application/json'
+        },
+        method: 'POST',
+        body: JSON.stringify({id: coupon._id})
+    }).then(function(res) {
+        if (!res.ok) throw new Error('There was an error approving the coupon');
+        couponDiv.parentNode.removeChild(couponDiv);
+        populate(active, [coupon]);
+    }).catch(function(err) {
+        console.log(err);
+    });
 }
 
 function formatDate(date) {

@@ -31,12 +31,16 @@ html, body
     margin 0 auto
     max-width 1080px
 .navbar-item
-    display inline-block
+    display block
     padding 1rem
+    text-align center
 .navbar-item:hover
     background-color rgb(220, 220, 220)
     background-color rgba(200, 200, 200, .7)
     cursor pointer
+@media only screen and (min-width: 350px)
+    .navbar-item
+        display inline-block
 
 .form
     width 90%
@@ -127,7 +131,14 @@ html, body
 .coupon-name
     font-size 1.25rem
     font-weight bold
+.coupon-button
+    display block
+    margin 0 auto
+    float none
+
 @media only screen and (min-width: mobile-width)
     .coupon-info
         display inline-block
         max-width 75%
+    .coupon-button
+        float right    
