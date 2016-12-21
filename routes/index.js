@@ -29,11 +29,15 @@ router.get('/admin', auth.adminRequired, (req, res, next) => {
 });
 
 router.get('/admin/coupons', auth.adminRequired, (req, res, next) => {
-    return res.render('coupons', {token: req.token, isSuperAdmin: !!req.user.isSuperAdmin});
+    return res.render('coupons', {
+        token: req.token,
+        isAdmin: !!req.user.isAdmin,
+        isSuperAdmin: !!req.user.isSuperAdmin
+    });
 });
 router.post('/admin/coupons', auth.adminRequired, (req, res, next) => {
     req.body.postedBy = req.user.id;
-    req.body.companyName = req.user.companyName;
+    if (!req.body.companyName) req.body.companyName = req.user.companyName;
     request.post({
         url: config.apiUrl + '/coupons',
         headers: {'x-access-token': req.token},

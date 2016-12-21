@@ -145,6 +145,7 @@ function submitCouponForm() {
         }
         data.endDate = endDate;
     }
+    if (form.companyName.value) data.companyName = form.companyName.value;
 
     if (errorMessage) return displayError(errorMessage);
 

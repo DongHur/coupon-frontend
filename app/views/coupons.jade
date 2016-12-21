@@ -16,6 +16,8 @@ block content
             .js-date-input.date-input(name='startDate')
         label.form-input #[input(type='checkbox' name='hasEndDate' onchange='toggleEndDate()')] Expires
             .js-date-input.date-input.hidden(name='endDate')
+        if !isAdmin
+            input.form-input(type='text' name='companyName' placeholder='Company Name')
         button.form-input.button(type='button' onclick='submitCouponForm()') Submit
     .modal#js-success
         .modal-content
