@@ -169,6 +169,8 @@ function submitUser() {
     if (form.firstName.value) data.firstName = form.firstName.value;
     if (form.lastName.value) data.lastName = form.lastName.value;
     if (form.classYear.value) data.classYear = form.classYear.value;
+    if (form.isAdmin.checked) data.isAdmin = true;
+    if (form.isSuperAdmin.checked) data.isSuperAdmin = true;
     if (!validateEmail(form.email, true)) {
         errorMessage += 'Email address is invalid.';
     }
