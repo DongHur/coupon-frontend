@@ -63,21 +63,26 @@ function populate(target, coupons) {
             life.innerHTML += ' ' + formatDate(c.endDate);
         info.appendChild(life);
 
+        var buttonWrap = document.createElement('div');
+        buttonWrap.setAttribute('class', 'coupon-button');
         var button = document.createElement('button');
-        button.setAttribute('class', 'coupon-button button');
+        button.setAttribute('class', 'button');
         button.setAttribute('type', 'button');
         if (target === unapproved) {
-            button.onclick = function (x,y) {
-                return function() {approveCoupon(x,y)}
-            }(c,div);
+            button.onclick = function (x,y,z) {
+                return function() {approveCoupon(x,y,z)}
+            }(c, buttonWrap, div);
             button.innerHTML = 'Approve';
         } else if (target === active) {
-            button.onclick = function (x) {return function() {sendTexts(x)}}(c._id);
+            button.onclick = function (x,y) {
+                return function() {sendTexts(x,y)}
+            }(c._id, buttonWrap);
             button.innerHTML = 'Send texts';
         }
+        buttonWrap.appendChild(button);
 
         div.appendChild(info);
-        div.appendChild(button);
+        div.appendChild(buttonWrap);
         if (coupons.length === 1)
             target.insertBefore(div, target.firstChild.nextSibling)
         else
@@ -85,7 +90,8 @@ function populate(target, coupons) {
     }
 }
 
-function approveCoupon(coupon, couponDiv) {
+function approveCoupon(coupon, couponButtonWrap, couponDiv) {
+    loadingButton(couponButtonWrap);
     fetch('/admin/manage/unapproved', {
         headers: {
             'x-access-token': localStorage.token,
@@ -95,6 +101,7 @@ function approveCoupon(coupon, couponDiv) {
         body: JSON.stringify({id: coupon._id})
     }).then(function(res) {
         if (!res.ok) throw new Error('There was an error approving the coupon');
+        buttonFinishedLoading(couponButtonWrap);
         couponDiv.parentNode.removeChild(couponDiv);
         populate(active, [coupon]);
     }).catch(function(err) {
@@ -102,11 +109,12 @@ function approveCoupon(coupon, couponDiv) {
     });
 }
 
-function sendTexts(id) {
+function sendTexts(id, buttonWrap) {
     if (localStorage.sentTexts && localStorage.sentTexts.indexOf(id) !== -1) {
         var c = confirm("You've already sent texts for this coupon. Send again?");
         if (!c) return;
     }
+    loadingButton(buttonWrap);
     fetch('/admin/manage/active', {
         headers: {
             'x-access-token': localStorage.token,
@@ -121,6 +129,7 @@ function sendTexts(id) {
         showModal(info);
         if (!localStorage.sentTexts) localStorage.sentTexts = id;
         else if (!c) localStorage.sentTexts += ' ' + id;
+        buttonFinishedLoading(buttonWrap);
     }).catch(function (err) {
         addError(active, err)
     });
@@ -150,6 +159,29 @@ function showModal(info) {
         rejectedInfo.innerHTML = 'No addresses rejeced the texts';
     div.appendChild(rejectedTitle);
     div.appendChild(rejectedInfo);
+}
+
+function loadingButton(wrap) {
+    for (var i = 0; i < wrap.childNodes.length; i++) {
+        var c = wrap.childNodes[i];
+        if (c.getAttribute('type') === 'button') {
+            var height = c.style.height;
+            c.style.display = 'none';
+            break;
+        }
+    }
+    var img = document.createElement('img');
+    img.src = '/img/loading.gif';
+    img.style.height = height || '50px';
+    wrap.appendChild(img);
+}
+
+function buttonFinishedLoading(wrap) {
+    for (var i = 0; i < wrap.childNodes.length; i++) {
+        var c = wrap.childNodes[i];
+        if (c.getAttribute('type') === 'button') c.style.display = '';
+        if (c.nodeName === 'IMG') c.style.display = 'none';
+    }
 }
 
 
