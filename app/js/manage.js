@@ -119,8 +119,8 @@ function sendTexts(id) {
         return res.json();
     }).then(function(info) {
         showModal(info);
-        if (!localStorage.sentTexts) localStorage.sentTexts = [id];
-        else if (!c) localStorage.sentTexts.push(id);
+        if (!localStorage.sentTexts) localStorage.sentTexts = id;
+        else if (!c) localStorage.sentTexts += ' ' + id;
     }).catch(function (err) {
         addError(active, err)
     });
@@ -128,7 +128,28 @@ function sendTexts(id) {
 
 function showModal(info) {
     document.getElementById('js-success').style.display = 'block';
-    document.getElementById('js-info').innerHTML = JSON.stringify(info);
+    var div = document.getElementById('js-info');
+    while (div.hasChildNodes()) div.removeChild(div.lastChild);
+
+    var acceptedTitle = document.createElement('h3');
+    acceptedTitle.innerHTML = 'Texts were sent to the following addresses';
+    var acceptedInfo = document.createElement('p');
+    if (info.accepted && info.accepted.length)
+        acceptedInfo.innerHTML = info.accepted.join('</br>');
+    else
+        acceptedInfo.innerHTML = 'Texts were sent to no addresses';
+    div.appendChild(acceptedTitle);
+    div.appendChild(acceptedInfo);
+        
+    var rejectedTitle = document.createElement('h3');
+    rejectedTitle.innerHTML = 'The following addresses rejected the texts';
+    var rejectedInfo = document.createElement('p');
+    if (info.rejected && info.rejected.length)
+        rejectedInfo.innerHTML = info.accepted.join('</br>');
+    else
+        rejectedInfo.innerHTML = 'No addresses rejeced the texts';
+    div.appendChild(rejectedTitle);
+    div.appendChild(rejectedInfo);
 }
 
 
