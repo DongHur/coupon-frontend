@@ -27,8 +27,14 @@ module.exports = function(grunt) {
         },
 
         watch: {
-            files: ['gruntfile.js', 'app/stylesheets/*', 'app/js/*'],
-            tasks: ['stylus', 'uglify']
+            css: {
+                files: ['gruntfile.js', 'app/stylesheets/*'],
+                tasks: ['stylus'],
+            },
+            js: {
+                files: ['gruntfile.js', 'app/js/*'],
+                tasks: ['uglify'],
+            }
         }
     });
 
