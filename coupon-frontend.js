@@ -8,7 +8,8 @@ const bodyParser = require('body-parser');
 const config = require('./app/models/config');
 const routes = require('./routes/index');
 
-const app = express();
+var app = express();
+if (app.get('env') === 'development') app.locals.dev = true;
 
 // view engine setup
 app.set('views', path.join(__dirname, 'app', 'views'));
@@ -21,7 +22,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // log requests
-if (app.get('env') === 'development') app.use(logger('dev'));
+if (app.locals.dev) app.use(logger('dev'));
 
 app.use('/', routes);
 
@@ -33,7 +34,7 @@ app.use((req, res, next) => {
 });
 
 // development error handler
-if (app.get('env') === 'development') {
+if (app.locals.dev) {
     app.use((err, req, res, next) => {
         if (err.status !== 404) console.log(err);
         res.status(err.status || 500).send();

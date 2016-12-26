@@ -30,10 +30,17 @@ module.exports = function(grunt) {
             css: {
                 files: ['gruntfile.js', 'app/stylesheets/*'],
                 tasks: ['stylus'],
+                options: { livereload: 10000 }
             },
             js: {
                 files: ['gruntfile.js', 'app/js/*'],
                 tasks: ['uglify'],
+                options: { livereload: 10001 }
+            },
+            html: {
+                files: ['app/views/*'],
+                tasks: [],
+                options: { livereload: 10002 }
             }
         }
     });
