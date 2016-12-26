@@ -35,12 +35,12 @@ module.exports = function(grunt) {
             js: {
                 files: ['gruntfile.js', 'app/js/*'],
                 tasks: ['uglify'],
-                options: { livereload: 10001 }
+                options: { livereload: 10000 }
             },
             html: {
                 files: ['app/views/*'],
                 tasks: [],
-                options: { livereload: 10002 }
+                options: { livereload: 10000 }
             }
         }
     });
